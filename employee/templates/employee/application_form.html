@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Application form{% endblock title %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+<form method="post" enctype="multipart/form-data" action="{% url 'employee:apply' job.id %}" class="mt-5 mb-5">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+  
+    <div class="mb-3">
+      <label for="id_full_name" class="form-label">Full Name</label>
+      {{ form.full_name }}
+      {% if form.full_name.errors %}
+        <div class="text-danger small">{{ form.full_name.errors }}</div>
+      {% endif %}
+    </div>
+  
+    <div class="mb-3">
+      <label for="id_email" class="form-label">Email</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <div class="text-danger small">{{ form.email.errors }}</div>
+      {% endif %}
+    </div>
+  
+    <div class="mb-3">
+      <label for="id_phone" class="form-label">Phone</label>
+      {{ form.phone }}
+      {% if form.phone.errors %}
+        <div class="text-danger small">{{ form.phone.errors }}</div>
+      {% endif %}
+    </div>
+  
+    <div class="mb-3">
+      <label for="id_motivational" class="form-label">Motivational Message</label>
+      {{ form.motivational }}
+      {% if form.motivational.errors %}
+        <div class="text-danger small">{{ form.motivational.errors }}</div>
+      {% endif %}
+    </div>
+  
+    <div class="mb-3">
+      <label for="id_curriculum_vitae" class="form-label">Upload CV</label>
+      {{ form.curriculum_vitae }}
+      {% if form.curriculum_vitae.errors %}
+        <div class="text-danger small">{{ form.curriculum_vitae.errors }}</div>
+      {% endif %}
+    </div>
+  
+    <button type="submit" class="btn btn-primary" style="display:block; margin:20px auto 0 auto;">Apply</button>
+  </form>
+</div>
+
+     {% endblock %}

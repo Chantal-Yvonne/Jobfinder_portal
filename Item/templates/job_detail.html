@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Job Detail{% endblock title %}
+
+{% block content %}
+<main>
+    <!-- Hero Area Start-->
+    <div class="slider-area">
+        <div class="single-slider section-overly slider-height2 d-flex align-items-center" 
+             data-background="{% static 'assets/img/hero/about.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                            <h2>Get a job</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Area End -->
+
+    <!-- Job Post Company Start -->
+    <div class="job-post-company pt-120 pb-120">
+        <div class="container">
+            <div class="row justify-content-between">
+                <!-- Left Content -->
+                <div class="col-xl-7 col-lg-8">
+                    <!-- Job Single -->
+                    <div class="single-job-items mb-50">
+                        <div class="job-items">
+                            <div class="company-img company-img-details">
+                                {% if job.image %}
+                                <a href="#"><img src="{{ job.image.url }}" alt="{{ job.job_position }}"></a>
+                                {% endif %}
+                            </div>
+                            <div class="job-tittle">
+                                <h4>{{ job.job_position }} at {{ job.company_name }}</h4>
+                                <!-- <ul>
+                                    <li>Category: {{ job.get_category_display }}</li>
+                                    <li>Type: {{ job.get_job_type_display }}</li>
+                                </ul> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Job Description -->
+                    <div class="job-post-details">
+                        <div class="post-details1 mb-50">
+                            <div class="small-section-tittle">
+                                <h4>Job Description</h4>
+                            </div>
+                            <p>{{ job.description|linebreaks }}</p>
+                        </div>
+
+                        <div class="post-details2 mb-50">
+                            <div class="small-section-tittle">
+                                <h4>Required Knowledge, Skills, and Abilities</h4>
+                            </div>
+                            <ul>
+                                {% for skill in job.skills %}
+                                <li>{{ skill }}</li>
+                                {% empty %}
+                                <li>No skills specified</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="post-details2 mb-50">
+                            <div class="small-section-tittle">
+                                <h4>Education + Experience</h4>
+                            </div>
+                            <ul>
+                                {% for experience in job.experience %}
+                                <li>{{ experience }}</li>
+                                {% empty %}
+                                <li>No experience specified</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="mb-50">
+                            {% if user_is_owner %}
+                                <a href="{% url 'dashboard:update' pk=job.id %}" class="btn btn-success btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" 
+                                        data-bs-target="#deleteJobModal" data-id="{{ job.id }}">
+                                    Delete
+                                </button>
+                            {% else %}
+                                {% if user_has_applied %}
+                                    <form method="post" action="{% url 'item:delete_application' job.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-warning">Withdraw Application</button>
+                                    </form>
+                                {% else %}
+                                    <a href="{% url 'employee:apply' job.id %}" class="btn btn-success">Apply for this Job</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'dashboard:job_listings' %}" class="btn btn-link mt-3">Back to Browse</a>
+                    </div>
+                </div>
+
+                <!-- Right Content -->
+                <div class="col-xl-4 col-lg-4">
+                    <div class="post-details3 mb-50">
+                        <div class="small-section-tittle">
+                            <h4>Job Overview</h4>
+                        </div>
+                        <ul>
+                            <li>Posted date: <span>{{ job.posted_by|date:"d M Y" }}</span></li>
+                            <li>Location: <span>{{ job.city_location }}</span></li>
+                            <li>Vacancy: <span>{{ job.vacancy }}</span></li>
+                            <li>Job nature: <span>{{ job.job_nature }}</span></li>
+                            <li>Salary: <span>{{ job.salary }} yearly</span></li>
+                            <li>Application deadline: <span>{{ job.application_deadline }}</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="post-details4 mb-50">
+                        <div class="small-section-tittle">
+                            <h4>Company Information</h4>
+                        </div>
+                        <span>{{ job.company_name }}</span>
+                        <p>{{ job.company_description }}</p>
+                        <ul>
+                            <li>Name: <span>{{ job.company_name }}</span></li>
+                            <li>Web: <span>{{ job.website }}</span></li>
+                            <li>Email: <span>{{ job.company_email }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Job Post Company End -->
+
+    <!-- Delete Job Modal -->
+    <div class="modal fade" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteJobModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this job?
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" id="deleteJobForm">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to dynamically update form action -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteJobModal = document.getElementById('deleteJobModal');
+            deleteJobModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const jobId = button.getAttribute('data-id');
+                const deleteForm = document.getElementById('deleteJobForm');
+
+                const urlTemplate = "{% url 'dashboard:delete' pk=0 %}";
+                const url = urlTemplate.replace('0', jobId);
+                deleteForm.action = url;
+            });
+        });
+    </script>
+</main>
+{% endblock %}

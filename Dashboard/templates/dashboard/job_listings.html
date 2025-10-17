@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <div class="container">
+            <div class="row justify-content-center mb-4 mt-10">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">Available Job Listings</h2>
+                    <p>Browse through all the jobs currently posted on the platform.</p>
+                </div>
+            </div>
+
+           <div class="row">
+    {% if page_obj %}
+        {% for job in page_obj %}
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="company-img">
+                        {% if job.image %}
+                        <img src="{{ job.image.url }}" alt="{{ job.job_position }}" class="img-fluid"
+                             style="width:60px; height:60px; object-fit:cover;">
+                        {% endif %}
+                    </div>
+                    <h5 class="card-title">{{ job.job_position }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ job.company_name }}</h6>
+                    <p class="card-text text-truncate" style="max-height: 3.5em;">{{ job.description }}</p>
+                    <ul class="list-unstyled mb-2">
+                        {% if job.salary %}
+                        <li><strong>Salary:</strong> R {{ job.salary }}</li>
+                        {% endif %}
+                        <li><strong>Date Posted:</strong> {{ job.date_posted|date:"F j, Y" }}</li>
+                    </ul>
+                    <a href="{% url 'item:detail' job.id %}" class="btn btn-primary btn-sm">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12 text-center">
+            <p>No jobs found.</p>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Pagination controls -->
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+</section>
+    {% endblock %}

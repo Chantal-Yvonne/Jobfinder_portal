@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome!{% endblock %}
+
+{% block content %}
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area">
+        <!-- Mobile Menu -->
+        <div class="slider-active">
+            <div class="single-slider slider-height d-flex align-items-center"
+                data-background="{% static 'assets/img/hero/h1_hero.jpg' %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-9 col-md-10">
+                            <div class="hero__caption">
+                                <h1>Find the most exciting startup jobs</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Search Box -->
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <div class="search-form">
+                               <a href="{% url 'dashboard:job_listings' %}" class="btn btn-primary btn-lg px-20 py-10">Find job</a>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <section class="job-listings-area section-padding">
+
+        <div class="container vh-30 d-flex flex-column justify-content-center align-items-center">
+            <!-- Search Card -->
+            <div class="card p-4 shadow-sm" style="max-width: 600px; width: 100%;">
+                <h3 class="text-center mb-3">Find Your Job</h3>
+                <form method="GET" action="" class="d-flex">
+                    <input type="text" name="query" class="form-control me-2" placeholder="Search by job position..."
+                        value="{{ query }}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Search end -->
+        <div class="container">
+            <div class="row justify-content-center mb-4 mt-4">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">Available Job Listings</h2>
+                    <p>Browse through all the jobs currently posted on the platform.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                {% if jobs %}
+                {% for job in jobs %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="company-img">
+                                {% if job.image %}
+                                <!-- Show the uploaded image for this job -->
+                                <img src="{{ job.image.url }}" alt="{{ job.job_position }}" class="img-fluid"
+                                    style="width:60px; height:60px; object-fit:cover;">
+
+                                {% endif %}
+                            </div>
+                            <h5 class="card-title">{{ job.job_position }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ job.company_name }}</h6>
+                            <p class="card-text text-truncate" style="max-height: 3.5em;">{{ job.description }}</p>
+                            <ul class="list-unstyled mb-2">
+                                {% if job.salary %}
+                                <li><strong>Salary:</strong> R {{ job.salary }}</li>
+                                {% endif %}
+                                <li><strong>Date Posted:</strong> {{ job.date_posted|date:"F j, Y" }}</li>
+                            </ul>
+                            <a href="{% url 'item:detail' job.id %}" class="btn btn-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-12 text-center">
+                    <p>No jobs found.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- How  Apply Process Start-->
+    <div class="apply-process-area apply-bg pt-150 pb-150"
+        data-background="{% static 'assets/img/gallery/how-applybg.png' %}">
+        <div class="container">
+            <!-- Section Tittle -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-tittle white-text text-center">
+                        <span>Apply process</span>
+                        <h2> How it works</h2>
+                    </div>
+                </div>
+            </div>
+            <!-- Apply Process Caption -->
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-process text-center mb-30">
+                        <div class="process-ion">
+                            <span class="flaticon-search"></span>
+                        </div>
+                        <div class="process-cap">
+                            <h5>1. Search a job</h5>
+                            <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-process text-center mb-30">
+                        <div class="process-ion">
+                            <span class="flaticon-curriculum-vitae"></span>
+                        </div>
+                        <div class="process-cap">
+                            <h5>2. Apply for job</h5>
+                            <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-process text-center mb-30">
+                        <div class="process-ion">
+                            <span class="flaticon-tour"></span>
+                        </div>
+                        <div class="process-cap">
+                            <h5>3. Get your job</h5>
+                            <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- How  Apply Process End-->
+    <!-- Testimonial Start -->
+    <div class="testimonial-area testimonial-padding">
+        <div class="container">
+            <!-- Testimonial contents -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-xl-8 col-lg-8 col-md-10">
+                    <div class="h1-testimonial-active dot-style">
+                        <!-- Single Testimonial -->
+                        <div class="single-testimonial text-center">
+                            <!-- Testimonial Content -->
+                            <div class="testimonial-caption ">
+                                <!-- founder -->
+                                <div class="testimonial-founder  ">
+                                    <div class="founder-img mb-30">
+                                        <img src="assets/img/testmonial/testimonial-founder.png" alt="">
+                                        <span>Margaret Lawson</span>
+                                        <p>Creative Director</p>
+                                    </div>
+                                </div>
+                                <div class="testimonial-top-cap">
+                                    <p>“I am at an age where I just want to be fit and healthy our bodies are our
+                                        responsibility! So start caring for your body and it will care for you. Eat
+                                        clean it will care for you and workout hard.”</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single Testimonial -->
+                        <div class="single-testimonial text-center">
+                            <!-- Testimonial Content -->
+                            <div class="testimonial-caption ">
+                                <!-- founder -->
+                                <div class="testimonial-founder  ">
+                                    <div class="founder-img mb-30">
+                                        <img src="assets/img/testmonial/testimonial-founder.png" alt="">
+                                        <span>Margaret Lawson</span>
+                                        <p>Creative Director</p>
+                                    </div>
+                                </div>
+                                <div class="testimonial-top-cap">
+                                    <p>“I am at an age where I just want to be fit and healthy our bodies are our
+                                        responsibility! So start caring for your body and it will care for you. Eat
+                                        clean it will care for you and workout hard.”</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Single Testimonial -->
+                        <div class="single-testimonial text-center">
+                            <!-- Testimonial Content -->
+                            <div class="testimonial-caption ">
+                                <!-- founder -->
+                                <div class="testimonial-founder  ">
+                                    <div class="founder-img mb-30">
+                                        <img src="assets/img/testmonial/testimonial-founder.png" alt="">
+                                        <span>Margaret Lawson</span>
+                                        <p>Creative Director</p>
+                                    </div>
+                                </div>
+                                <div class="testimonial-top-cap">
+                                    <p>“I am at an age where I just want to be fit and healthy our bodies are our
+                                        responsibility! So start caring for your body and it will care for you. Eat
+                                        clean it will care for you and workout hard.”</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+</main>
+{% endblock %}
