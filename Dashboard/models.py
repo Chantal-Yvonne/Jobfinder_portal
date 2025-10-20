@@ -5,20 +5,12 @@ from django.core.validators import FileExtensionValidator
 
 class Job(models.Model):
     """model for job """
-    CATEGORY_CHOICES = [
-        ('tech', 'Tech'),
-        ('education', 'Education'),
-        ('health', 'Health'),
-        ('finance', 'Finance'),
-        ('other', 'Other'),
-    ]
+   
 
     JOB_TYPE_CHOICES = [
-        ('full-time', 'Full-Time'),
-        ('part-time', 'Part-Time'),
-        ('freelance', 'Freelance'),
-        ('remote', 'Remote'),
-        ('internship', 'Internship'),
+          ('Full time', 'Full Time'),
+        ('Part time', 'Part Time'),
+        ('Freelance', 'Freelance'),
     ]
 
     # Basic job info
@@ -35,7 +27,7 @@ class Job(models.Model):
     # Additional fields needed for template
     city_location = models.CharField(max_length=255, blank=True, null=True)
     vacancy = models.PositiveIntegerField(default=1)
-    job_nature = models.CharField(max_length=100, blank=True, null=True)
+    job_nature = models.CharField(max_length=20,choices=JOB_TYPE_CHOICES, blank=True, null=True)
     # yearly_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     application_deadline = models.DateField(blank=True, null=True)
 

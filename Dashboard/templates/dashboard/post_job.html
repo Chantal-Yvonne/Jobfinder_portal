@@ -43,7 +43,7 @@
     }
 
     form div {
-        overflow: hidden;
+        /* overflow: hidden; */
     }
 </style>
 
@@ -100,18 +100,17 @@
 
 {% for field in form %}
   <div style="margin-bottom: 15px;">
-    <label for="{{ field.id_for_label }}" style="font-weight: bold;">{{ field.label }}</label><br>
+    {{ field.label_tag }}
     {{ field }}
-
     {% if field.help_text %}
       <small style="color: gray;">{{ field.help_text }}</small>
     {% endif %}
-
     {% for error in field.errors %}
       <p style="color: red; margin: 0;">{{ error }}</p>
     {% endfor %}
   </div>
 {% endfor %}
+
 
 {% if form.non_field_errors %}
   <div style="color: red; margin-bottom: 15px;">
