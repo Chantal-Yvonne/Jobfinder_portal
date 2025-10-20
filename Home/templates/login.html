@@ -93,6 +93,12 @@
             </div>
             {% endif %}
 
+            <div class="text-center mt-3">
+                <p class="mb-0">
+                    Not a member? <a href="{%url 'home:signup'%}" class="text-primary">Sign up</a>
+                </p>
+            </div>
+            
             <input type="hidden" name="next" value="{{ next }}">
 
             <div style="text-align: center; margin-top: 20px;">

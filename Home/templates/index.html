@@ -58,41 +58,47 @@
                 </div>
             </div>
 
-            <div class="row">
-                {% if jobs %}
-                {% for job in jobs %}
-                <div class="col-lg-6 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="company-img">
-                                {% if job.image %}
-                                <!-- Show the uploaded image for this job -->
-                                <img src="{{ job.image.url }}" alt="{{ job.job_position }}" class="img-fluid"
-                                    style="width:60px; height:60px; object-fit:cover;">
-
-                                {% endif %}
+            <div class="row justify-content-center mt-4">
+                <div class="col-xl-10">
+                    {% if jobs %}
+                        {% for job in jobs %}
+                            <!-- single-job-content -->
+                            <div class="single-job-items mb-4 p-3 border rounded shadow-sm">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <!-- Left-->
+                                    <div class="d-flex align-items-center flex-grow-1" >
+                                        
+                                        <div class="job-tittle">
+                                            <a href="{% url 'item:detail' job.id %}">
+                                                <h4 class="mb-1">{{ job.job_position }}</h4>
+                                            </a>
+                                            <ul class="list-inline mb-0 small text-muted">
+                                                <li class="list-inline-item">{{ job.company_name }}</li>
+                                                <li class="list-inline-item">R {{ job.salary }}</li>
+                                                <li class="list-inline-item">R {{ job.location }}</li>
+                                                <li class="list-inline-item"><i class="fas fa-calendar-alt"></i> {{ job.date_posted|date:"F j, Y" }}</li>
+                                                {% if job.salary %}
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+            
+                                   
+                                </div>
+                                 <!-- Right -->
+                                 <div class=" ms-auto text-end mt-3 mt-md-0 " style="margin-left: 20rem;">
+                                    <a href="{% url 'item:detail' job.id %}" class="btn btn-primary btn-sm">View Details</a>
+                                </div>
                             </div>
-                            <h5 class="card-title">{{ job.job_position }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ job.company_name }}</h6>
-                            <p class="card-text text-truncate" style="max-height: 3.5em;">{{ job.description }}</p>
-                            <ul class="list-unstyled mb-2">
-                                {% if job.salary %}
-                                <li><strong>Salary:</strong> R {{ job.salary }}</li>
-                                {% endif %}
-                                <li><strong>Date Posted:</strong> {{ job.date_posted|date:"F j, Y" }}</li>
-                            </ul>
-                            <a href="{% url 'item:detail' job.id %}" class="btn btn-primary btn-sm">View Details</a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center mt-5">
+                            <p>No jobs found.</p>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
-                {% endfor %}
-                {% else %}
-                <div class="col-12 text-center">
-                    <p>No jobs found.</p>
-                </div>
-                {% endif %}
             </div>
-        </div>
+            
     </section>
 
     <!-- How  Apply Process Start-->

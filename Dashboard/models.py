@@ -43,7 +43,7 @@ class Job(models.Model):
     company_description = models.TextField(blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     company_email = models.EmailField(blank=True, null=True)
-    image = models.ImageField(upload_to='job_images/', blank=True, null=True)
+    # image = models.ImageField(upload_to='cvs/', blank=True, null=True)
 
     # Skills and experience lists for template loops
     skills = models.TextField(blank=True, null=True, help_text ="Comma-seperated list of skills")

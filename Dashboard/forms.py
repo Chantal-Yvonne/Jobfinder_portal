@@ -10,7 +10,7 @@ class JobForm(forms.ModelForm):
         fields = [
             'job_position', 'company_name', 'description', 'salary',
             'city_location', 'vacancy', 'job_nature', 'application_deadline',
-            'company_description', 'website', 'company_email', 'image', 'skills', 'experience'
+            'company_description', 'website', 'company_email', 'skills', 'experience'
         ]
         widgets = {
             'description': forms.Textarea(attrs={'placeholder': 'Job Description'}),
