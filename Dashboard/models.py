@@ -3,17 +3,26 @@ from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 
 
+
+
 class Job(models.Model):
     """model for job """
-   
+    
+    JOB_CATEGORIES = [
+    ('Healthcare','Healthcare'),
+    ('Education','Education'),
+    ('IT & Software','IT & Software'),
+]
 
-    JOB_TYPE_CHOICES = [
-          ('Full time', 'Full Time'),
-        ('Part time', 'Part Time'),
-        ('Freelance', 'Freelance'),
+    JOB_NATURE_CHOICES = [
+        ('Full Time','Full Time'),
+        ('Part Time','Part Time'),
+        ('Remote','Remote'),
+        ('Freelance','Freelance'),
     ]
 
     # Basic job info
+    category = models.CharField(max_length=50, choices=JOB_CATEGORIES, blank=True, null=True)
     job_position = models.CharField(max_length=255)
     description = models.TextField(max_length=600)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
@@ -27,7 +36,7 @@ class Job(models.Model):
     # Additional fields needed for template
     city_location = models.CharField(max_length=255, blank=True, null=True)
     vacancy = models.PositiveIntegerField(default=1)
-    job_nature = models.CharField(max_length=20,choices=JOB_TYPE_CHOICES, blank=True, null=True)
+    job_nature = models.CharField(max_length=20,choices=JOB_NATURE_CHOICES, blank=True, null=True)
     # yearly_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     application_deadline = models.DateField(blank=True, null=True)
 
@@ -43,6 +52,11 @@ class Job(models.Model):
 
     # Relations
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE,  blank=True, null=True)
+    
+    #track if the job has been taken
+    is_filled = models.BooleanField(default=False)
+
+
 
     def __str__(self):
         return f"{self.job_position} at {self.company_name}"

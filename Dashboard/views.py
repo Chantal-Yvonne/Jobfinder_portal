@@ -3,6 +3,7 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import JobForm
 from .models import Job, Application
+
 from employee.models import JobApplication
 from django.core.paginator import Paginator
 
@@ -110,11 +111,35 @@ def delete_application(request, pk):
     return HttpResponseNotAllowed(['POST'])
 
 
-def job_listings(request):
-    jobs_list = Job.objects.all().order_by('-date_posted')  # or your desired ordering
-    paginator = Paginator(jobs_list, 6)  # Show 6 jobs per page
 
+def job_listings(request):
+    selected_category = request.GET.get('category', '')
+    selected_job_types = request.GET.getlist('job_type')
+
+    jobs = Job.objects.filter(is_filled=False).order_by('-date_posted')
+
+    # Filter by category 
+    if selected_category:
+        jobs = jobs.filter(category=selected_category)
+
+
+    # Filter by job nature
+    if selected_job_types:
+        jobs = jobs.filter(job_nature__in=selected_job_types)
+
+    # Pagination
+    paginator = Paginator(jobs, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'dashboard/job_listings.html', {'page_obj': page_obj})
+    # Categories for filter dropdown
+    categories = [cat[0] for cat in Job.JOB_CATEGORIES]
+
+    context = {
+        'page_obj': page_obj,
+        'categories': categories,
+        'selected_category': selected_category,
+        'selected_job_types': selected_job_types,
+    }
+
+    return render(request, 'dashboard/job_listings.html', context)

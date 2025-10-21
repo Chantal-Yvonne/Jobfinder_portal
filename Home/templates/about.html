@@ -150,31 +150,8 @@
         </div>
         <!-- Online CV Area End-->
     
-<!-- contact.js -->
-   <script>
-        function validateForm() {
-            let name = document.getElementById("name").value;
-            let email = document.getElementById("email").value;
-            let message = document.getElementById("message").value;
-            let errors = [];
 
-            if (!/^[a-zA-Z ]+$/.test(name)) {
-                errors.push("Name must contain only letters.");
-            }
-            if (!/\S+@\S+\.\S+/.test(email)) {
-                errors.push("Invalid email format.");
-            }
-            if (message.length < 10) {
-                errors.push("Message must be at least 10 characters long.");
-            }
-
-            if (errors.length > 0) {
-                alert(errors.join("\n"));
-                return false;
-            }
-            return true;
-        }
-    </script>
+  
 
 
 

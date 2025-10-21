@@ -9,7 +9,7 @@ class JobForm(forms.ModelForm):
         model = Job
         fields = [
             'job_position', 'company_name', 'description', 'salary',
-            'city_location', 'vacancy', 'job_nature', 'application_deadline',
+            'city_location', 'vacancy','category', 'job_nature', 'application_deadline',
             'company_description', 'website', 'company_email', 'skills', 'experience'
         ]
         widgets = {
