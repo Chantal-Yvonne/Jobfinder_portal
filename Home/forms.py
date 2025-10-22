@@ -40,3 +40,5 @@ class ContactForm(forms.Form):
         if len(message) < 10:
             raise forms.ValidationError("Message must be at least 10 characters long.")
         return message
+
+
