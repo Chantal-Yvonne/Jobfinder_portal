@@ -29,19 +29,10 @@
                 <!-- Left Content -->
                 <div class="col-xl-7 col-lg-8">
                     <!-- Job Single -->
-                    <div class="single-job-items mb-50">
-                        <div class="job-items">
-                            <div class="company-img company-img-details">
-                                {% if job.image %}
-                                <a href="#"><img src="{{ job.image.url }}" alt="{{ job.job_position }}"></a>
-                                {% endif %}
-                            </div>
-                            <div class="job-tittle">
-                                <h4>{{ job.job_position }} at {{ job.company_name }}</h4>
-                                <!-- <ul>
-                                    <li>Category: {{ job.get_category_display }}</li>
-                                    <li>Type: {{ job.get_job_type_display }}</li>
-                                </ul> -->
+                    <div class=" mb-50">
+                        <div class="job-items ms-0" >
+                            <div class="job-tittle ">
+                                <h4 class="mb-1 fw-semibold fs-3">{{ job.job_position }} at {{ job.company_name }}</h4>
                             </div>
                         </div>
                     </div>
@@ -58,8 +49,9 @@
                             <div class="small-section-tittle">
                                 <h4>Required Knowledge, Skills, and Abilities</h4>
                             </div>
+                            <!-- Skills list -->
                             <ul>
-                                {% for skill in job.skills %}
+                                {% for skill in job.skills_list %}
                                 <li>{{ skill }}</li>
                                 {% empty %}
                                 <li>No skills specified</li>
@@ -71,8 +63,9 @@
                             <div class="small-section-tittle">
                                 <h4>Education + Experience</h4>
                             </div>
+                            <!-- Experience list -->
                             <ul>
-                                {% for experience in job.experience %}
+                                {% for experience in job.experience_list %}
                                 <li>{{ experience }}</li>
                                 {% empty %}
                                 <li>No experience specified</li>
@@ -82,24 +75,28 @@
 
                         <!-- Action Buttons -->
                         <div class="mb-50">
+                            <!-- Check if the logged-in user is the owner of this job -->
                             {% if user_is_owner %}
                                 <a href="{% url 'dashboard:update' pk=job.id %}" class="btn btn-success btn-sm">Edit</a>
+                                <!-- Delete button triggers a modal-->
                                 <button class="btn btn-danger btn-sm" data-bs-toggle="modal" 
                                         data-bs-target="#deleteJobModal" data-id="{{ job.id }}">
                                     Delete
                                 </button>
                             {% else %}
+                            <!-- Check if the user has already applied for this job -->
                                 {% if user_has_applied %}
+                                <!-- Form to withdraw application -->
                                     <form method="post" action="{% url 'item:delete_application' job.id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-warning">Withdraw Application</button>
                                     </form>
                                 {% else %}
-                                    <a href="{% url 'employee:apply' job.id %}" class="btn btn-success">Apply for this Job</a>
+                                    <a href="{% url 'employee:apply' job.id %}" class="btn btn-success px-3">Apply for this Job</a>
                                 {% endif %}
                             {% endif %}
                         </div>
-                        <a href="{% url 'dashboard:job_listings' %}" class="btn btn-link mt-3">Back to Browse</a>
+                        <a href="{% url 'dashboard:job_listings' %}" class="btn btn-link mt-3 text-decoration-none px-4">Back to Browse</a>
                     </div>
                 </div>
 
@@ -110,7 +107,7 @@
                             <h4>Job Overview</h4>
                         </div>
                         <ul>
-                            <li>Posted date: <span>{{ job.posted_by|date:"d M Y" }}</span></li>
+                            <li>Posted date: <span>{{ job.date_posted|date:"d M Y" }}</span></li>
                             <li>Location: <span>{{ job.city_location }}</span></li>
                             <li>Vacancy: <span>{{ job.vacancy }}</span></li>
                             <li>Job nature: <span>{{ job.job_nature }}</span></li>

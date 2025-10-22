@@ -44,22 +44,21 @@
                     </div>
 
         <div class="container vh-30 d-flex flex-column justify-content-center align-items-center">
-            <!-- Search Card -->
+            <!-- Job Search Card -->
             <div class="card p-4 shadow-sm mb-4" style="max-width: 600px; width: 100%;">
                 <form method="GET" action="" class="d-flex">
                     <input type="text" name="query" class="form-control me-2 mt-2" placeholder="Search by job position..."
-                        value="{{ query }}">
+                        value="{{ query }}"> <!-- Keeps the previous search term in the input after submitting -->
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form>
             </div>
         </div>
-
         <!-- Search end -->
-        <div class="container">
-           
 
+        <div class="container">
             <div class="row justify-content-center mt-4">
                 <div class="col-xl-10">
+                    <!-- Check if there are any jobs to display then loop through each job in the jobs queryset-->
                     {% if jobs %}
                         {% for job in jobs %}
                             <!-- single-job-content -->
@@ -72,14 +71,13 @@
                                             <a href="{% url 'item:detail' job.id %}">
                                                 <h4 class="mb-1">{{ job.job_position }}</h4>
                                             </a>
+                                            <!-- List of job details -->
                                             <ul class="list-inline mb-0 small text-muted">
                                                 <li class="list-inline-item">{{ job.company_name }}</li>
                                                 <li class="list-inline-item">R{{ job.salary }}</li>
                                                 <li class="list-inline-item">{{ job.location }}</li>
                                                 <li class="list-inline-item"><i class="fas fa-calendar-alt"></i> {{ job.date_posted|date:"F j, Y" }}</li>
                                                 <li class="list-inline-item">{{ job.job_nature }}</li>
-                                                {% if job.salary %}
-                                                {% endif %}
                                             </ul>
                                         </div>
                                     </div>
