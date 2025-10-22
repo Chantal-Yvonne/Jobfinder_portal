@@ -57,10 +57,11 @@ class Job(models.Model):
     is_filled = models.BooleanField(default=False)
 
 
-
+    #String representation of the Job instance
     def __str__(self):
         return f"{self.job_position} at {self.company_name}"
     
+    # Converts the comma-separated 'skills' text field into a Python list and strips extra whitespace from each skill
     def skills_list(self):
         if self.skills:
             return [skill.strip() for skill in self.skills.split(',')]
