@@ -6,7 +6,6 @@ from Dashboard.models import Job
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from .forms import ContactForm
 
 
 # Home Page View
@@ -64,18 +63,3 @@ def dashboard(request):
 
 
 
-
-
-
-def contact_view(request):
-    if request.method == "POST":
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            # You can save to database or send email here
-            messages.success(request, "Message sent successfully!")
-            form = ContactForm()  # Reset the form
-        else:
-            messages.error(request, "Please correct the errors below.")
-    else:
-        form = ContactForm()
-    return render(request, 'about.html', {'form': form})

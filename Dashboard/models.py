@@ -3,25 +3,26 @@ from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 
 
+
+
 class Job(models.Model):
     """model for job """
-    CATEGORY_CHOICES = [
-        ('tech', 'Tech'),
-        ('education', 'Education'),
-        ('health', 'Health'),
-        ('finance', 'Finance'),
-        ('other', 'Other'),
-    ]
+    
+    JOB_CATEGORIES = [
+    ('Healthcare','Healthcare'),
+    ('Education','Education'),
+    ('IT & Software','IT & Software'),
+]
 
-    JOB_TYPE_CHOICES = [
-        ('full-time', 'Full-Time'),
-        ('part-time', 'Part-Time'),
-        ('freelance', 'Freelance'),
-        ('remote', 'Remote'),
-        ('internship', 'Internship'),
+    JOB_NATURE_CHOICES = [
+        ('Full Time','Full Time'),
+        ('Part Time','Part Time'),
+        ('Remote','Remote'),
+        ('Freelance','Freelance'),
     ]
 
     # Basic job info
+    category = models.CharField(max_length=50, choices=JOB_CATEGORIES, blank=True, null=True)
     job_position = models.CharField(max_length=255)
     description = models.TextField(max_length=600)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
@@ -35,7 +36,7 @@ class Job(models.Model):
     # Additional fields needed for template
     city_location = models.CharField(max_length=255, blank=True, null=True)
     vacancy = models.PositiveIntegerField(default=1)
-    job_nature = models.CharField(max_length=100, blank=True, null=True)
+    job_nature = models.CharField(max_length=20,choices=JOB_NATURE_CHOICES, blank=True, null=True)
     # yearly_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     application_deadline = models.DateField(blank=True, null=True)
 
@@ -43,7 +44,7 @@ class Job(models.Model):
     company_description = models.TextField(blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     company_email = models.EmailField(blank=True, null=True)
-    image = models.ImageField(upload_to='job_images/', blank=True, null=True)
+    # image = models.ImageField(upload_to='cvs/', blank=True, null=True)
 
     # Skills and experience lists for template loops
     skills = models.TextField(blank=True, null=True, help_text ="Comma-seperated list of skills")
@@ -51,10 +52,16 @@ class Job(models.Model):
 
     # Relations
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE,  blank=True, null=True)
+    
+    #track if the job has been taken
+    is_filled = models.BooleanField(default=False)
 
+
+    #String representation of the Job instance
     def __str__(self):
         return f"{self.job_position} at {self.company_name}"
     
+    # Converts the comma-separated 'skills' text field into a Python list and strips extra whitespace from each skill
     def skills_list(self):
         if self.skills:
             return [skill.strip() for skill in self.skills.split(',')]
