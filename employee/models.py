@@ -2,21 +2,14 @@ from django.db import models
 from Dashboard.models import Job
 from django.contrib.auth.models import User
 # Create your models here.
-# class Employee(models.Model):
-#     employee_id = models.CharField(max_length=20)
-#     employee_name = models.CharField(max_length=100)
-#     employee_email = models.EmailField()
-#     employee_contact = models.CharField(max_length=20)
-
-#     def __str__(self):
-#         return self.employee_name
 
 
 
 
 class JobApplication(models.Model):
+    """The job this application is linked to.If the job is deleted, all related applications are also deleted (CASCADE)."""
     job = models.ForeignKey('Dashboard.Job', on_delete=models.CASCADE, related_name='employee_applications')
-    applicant = models.ForeignKey(User, on_delete=models.CASCADE)  # stores logged-in user
+    applicant = models.ForeignKey(User, on_delete=models.CASCADE)  # many-to-one relationship.Links a job application to the user who applied.
     full_name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)

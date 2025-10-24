@@ -3,19 +3,11 @@ from django.contrib.auth import logout
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SignUpForm
 from Dashboard.models import Job
-from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 
 
 # Home Page View
-# def index(request):
-#     # Show latest 6 jobs that are not sold, ordered by date posted descending
-#     jobs = Job.objects.all().order_by('-date_posted')[:6]
-#     return render(request, 'index.html', {
-#         'jobs': jobs,
-#     })
-
 def index(request):
     query = request.GET.get('query', '')  # get search input
 

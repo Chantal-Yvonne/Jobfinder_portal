@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from Dashboard.models import Job, Application
 from django.urls import reverse
@@ -39,7 +38,7 @@ def browse_jobs(request):
     }
     return render(request, 'browse.html', context)
 
-
+# View: Job detail page
 def job_detail(request, pk):
     job = get_object_or_404(Job, pk=pk)
 
@@ -56,25 +55,25 @@ def job_detail(request, pk):
     }
     return render(request, 'job_detail.html', context)
 
-
+# View: Apply to a job
 @login_required
 def apply_to_job(request, pk):
     # Redirect to dashboard app's apply view
     return redirect(reverse('dashboard:apply', kwargs={'pk': pk}))
 
-
+# View: Edit a job 
 @login_required
 def edit_job(request, pk):
     # Redirect to dashboard's edit job view
     return redirect(reverse('dashboard:update', kwargs={'pk': pk}))
 
-
+# View: Delete a job
 @login_required
 def delete_job(request, pk):
     # Redirect to dashboard's delete job view
     return redirect(reverse('dashboard:delete', kwargs={'pk': pk}))
 
-
+# View: Delete a user's job application
 @login_required
 def delete_application(request, pk):
     application = get_object_or_404(Application, pk=pk, applicant=request.user)

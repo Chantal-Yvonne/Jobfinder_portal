@@ -6,45 +6,8 @@ from .forms import JobApplicationForm
 from Dashboard.models import Job
 from .models import JobApplication
 
-# # Create your views here.
-# def employee_list(request):
-#     employee = Employee.objects.all()
-#     return render(request,'list.html', {'employees': employee})
 
-# def create_employee(request):
-#     if request.method == 'POST':
-#         form = EmployeeForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('list')
-#     else:
-#         form = EmployeeForm()
-#     return render(request, 'create.html', {'form':form})
-
-# def delete_employee(request,pk):
-#     employee = Employee.objects.get(id=pk)  
-#     if request.method == 'POST':
-#         employee.delete()  
-#         return redirect('list') 
-    
-# def update_employee(request,pk):
-#     employee = Employee.objects.get(id=pk)
-#     if request.method == 'POST':
-#         form = EmployeeForm(request.POST, instance=employee)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('list')
-#         # the instance will be whatever is being returned by employee
-#         # instance allows you to modify info that already exists 
-#     else: 
-#         form = EmployeeForm(instance=employee)
-#     return render(request, 'update.html', {'form':form})
-
-
-
-
-
-
+# View: Apply for a job
 @login_required
 def apply(request, pk):
     job = get_object_or_404(Job, id=pk)
@@ -68,6 +31,8 @@ def apply(request, pk):
 
     return render(request, 'employee/application_form.html', {'form': form, 'job': job})
 
+
+# View: Edit an existing job application
 @login_required
 def edit_application(request, pk):
     application = get_object_or_404(JobApplication, pk=pk, applicant=request.user)
@@ -84,6 +49,8 @@ def edit_application(request, pk):
 
     return render(request, 'employee/application_form.html', {'form': form, 'title': 'Edit Application'})
 
+
+# View: Delete (withdraw) a job application
 @login_required
 def delete_application(request, pk):
     application = get_object_or_404(JobApplication, pk=pk, applicant=request.user)
